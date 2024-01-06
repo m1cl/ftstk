@@ -1,15 +1,12 @@
 
 'use client'
 
-import { ChangeEvent, FormEvent, useState } from "react"
+import { useState } from "react"
 
-interface HTMLInputEvent extends Event {
- target: HTMLInputElement & EventTarget & { files: FileList };
-}
 
 function ImageUploader() {
  const [images, setImages] = useState<File[]>([])
- const handleUpload = (e: HTMLInputEvent) => {
+ const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
   if (!e.target.files) return
   const files = Array.from(e.target.files)
   setImages([...files, ...images])
