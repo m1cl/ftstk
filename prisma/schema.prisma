@@ -24,7 +24,10 @@ model Post {
     createdBy   User   @relation(fields: [createdById], references: [id])
     createdById String
 
-    @@index([name])
+    content String
+    authorId String
+
+    @@index([authorId])
 }
 
 // Necessary for Next auth
