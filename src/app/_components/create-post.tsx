@@ -7,7 +7,9 @@ import { api } from "~/trpc/react";
 
 export function CreatePost() {
   const router = useRouter();
-  const [name, setName] = useState("");
+  const [name, setName] = useState("name ");
+  console.log(name)
+
 
   const createPost = api.post.create.useMutation({
     onSuccess: () => {
