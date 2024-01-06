@@ -1,12 +1,12 @@
 
 'use client'
 
-import { useState } from "react"
+import { useState, ChangeEvent } from "react"
 
 
 function ImageUploader() {
  const [images, setImages] = useState<File[]>([])
- const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+ const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
   if (!e.target.files) return
   const files = Array.from(e.target.files)
   setImages([...files, ...images])
