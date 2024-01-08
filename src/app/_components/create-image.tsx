@@ -1,39 +1,27 @@
 "use client";
 
+import {useState, ChangeEvent} from "react";
+
 import {useRouter} from "next/navigation";
-import {ChangeEvent, useState} from "react";
+import {api} from "~/trpc/server";
 
-import {api} from "~/trpc/react";
-
-export function CreatePost() {
+export function CreateImage() {
   const router = useRouter();
   const [images, setImages] = useState<File[]>([]);
-
-  const createImage = api.image.create.useMutation({
-    onSuccess: () => {
-      router.refresh();
-      setImages([]);
-    },
-  });
-  const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
+    const createImage = api.image.create.useMutation({
+      name: e.target.files[0].name,
+      file: e.target.files[0],
+    });
 
     const files = Array.from(e.target.files);
-    if (files[0]?.name && files[0].length !== 0) {
-      const file = await files[0].text();
-      if (file) {
-        createImage.mutate({name: files[0].name, file});
-      }
-      console.log();
-
-    }
     setImages([...files, ...images]);
   };
 
-
   const showImages = () => {
     if (images) {
-      return images.map((image, index) => {
+      return Array.from(images).map((image, index) => {
         return (
           <img
             className="my-8 border-[24px] border-white shadow-2xl"
@@ -45,7 +33,7 @@ export function CreatePost() {
       });
     }
   };
-
+  // TODO: https://threejs.org/examples/?q=water#webgl_shaders_ocean background
   return (
     <div>
       {showImages()}
@@ -73,7 +61,6 @@ export function CreatePost() {
         <input
           id="dropzone-file"
           type="file"
-          accept=".jpg, .png, .gif, .jpeg"
           className="hidden"
           onChange={handleUpload}
         />
